@@ -1,0 +1,62 @@
+Given a deictic representation and available predicates, generate rules in the format.
+The rule's format is  
+target(X):-cond1(X),...condn(X).
+cond1(X):-pred1(X,Y),type(Y,const1).
+...
+condn(X):-predn(X,Y),type(Y,const2).
+Use predicates and constants that appear in the given sentence.
+Capitalize variables: X, Y, Z, W, etc.
+
+Examples:
+
+an object that is next to a keyboard.
+available predicates: next_to
+cond1(X):-next_to(X,Y),type(Y,keyboard).
+target(X):-cond1(X).
+
+an object that is on a desk.
+available predicates: on
+cond1(X):-on(X,Y),type(Y,desk).
+target(X):-cond1(X).
+
+
+an object that has papers.
+available predicates: has
+cond1(X):-has(X,Y),type(Y,papers).
+target(X):-cond1(X).
+
+an object that is on a white pillow.
+available predicates: on
+cond1(X):-on(X,Y),type(Y,white_pillow).
+target(X):-cond1(X).
+
+an object that has a fur.
+available predicate: has
+cond1(X):-has(X,Y),type(Y,fur).
+target(X):-cond1(X).
+
+an object that is on a ground, and that is behind a white line.
+available predicates: on,behind
+cond1(X):-on(X,Y),type(Y,ground).
+cond2(X):-behind(X,Y),type(Y,whiteline).
+target(X):-cond1(X),cond2(X)
+
+an object that is near a desk and against wall.
+available predicates: near,against
+cond1(X):-near(X,Y),type(Y,desk).
+cond2(X):-against(X,Y),type(Y,wall).
+target(X):-cond1(X),cond2(X).
+
+an object that has sides, that is on a pole, and that is above a stop sign.
+available predicates: has,on,above
+cond1(X):-has(X,Y),type(Y,sides).
+cond2(X):-on(X,Y),type(Y,pole).
+cond3(X):-above(X,Y),type(Y,stopsign).
+target(X):-cond1(X),cond2(X),cond3(X).
+
+an object that is wearing a shirt, that has a hair, and that is wearing shoes.
+available predicates: wearing,has,wearing
+cond1(X):-wearing(X,Y),type(Y,shirt).
+cond2(X):-has(X,Y),type(Y,hair).
+cond3(X):-wearing(X,Y),type(Y,shoes).
+target(X):-cond1(X),cond2(X),cond3(X).

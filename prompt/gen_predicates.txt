@@ -1,0 +1,32 @@
+Given a deictic representation, generate predicates in the format "pred1,pred2,...,predn".
+Use comma "," to separate predicates.
+Answer in one line.
+
+The available predicates are: on, has, wearing, of, in, near, behind, with, holding, above, sitting_on, wears, under, riding, in_front_of, standing_on, at, carrying, attached_to,  walking_on, over, for, looking_at, watching, hanging_from, laying_on, eating, and, belonging_to, parked_on, playing_on, using, covering, between, along, covered_in, part_of, lying_on, on_back_of, to, walking_in, mounted_on, across, against, from, growing_on, painted_on, playing, made_of, says, flying_in
+
+
+Examples:
+
+an object that is next to keyboard.
+next_to
+
+an object that is on a desk.
+on
+
+an object that has a papers.
+has
+
+an object which is on a desk and next to a phone.
+on,next_to
+
+an object that is behind a couch and on floor.
+behind,on
+
+an object that is near a desk and against wall.
+near,against
+
+an object that is parked on a street and has back.
+parked_on,has
+
+an object that has sides, that is on a pole, and that is above a stop sign.
+has,on,above

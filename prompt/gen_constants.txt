@@ -1,0 +1,14 @@
+Given a deictic representation, generate predicates in the format "const1,const2,...,constn".
+Use only small characters,
+
+An object that is next to the keyboard.
+keyboard
+
+An object that is on the desk.
+desk
+
+An object that has the papers.
+papers
+
+An object which is on the desk and next to the phone.
+desk,phone
