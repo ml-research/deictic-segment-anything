@@ -6,7 +6,6 @@ import openai
 import torch
 
 # from diffusers.scripts.convert_kakao_brain_unclip_to_diffusers import text_encoder
-openai.api_key = "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"
 
 from neumann.fol.language import Language
 
