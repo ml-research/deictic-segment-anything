@@ -1,4 +1,4 @@
-
+### *Refactoring is undegoing.
 <!-- <p align="center">
   <img src="./imgs/deisam_logo_eye.png">
 </p>  -->
@@ -10,7 +10,7 @@ Hikaru Shindo, Manuel Brack, Gopika Sudhakaran, Devendra Singh Dhami, Patrick Sc
 
 <p align="left">
   <img src="./imgs/deisam_task.png", height=180>
-</p> 
+</p>
 We propose DeiSAM, which integrates large pre-trained neural networks with differentiable logic reasoners. Given a complex, textual segmentation description, DeiSAM leverages Large Language Models (LLMs) to generate first-order logic rules and performs differentiable forward reasoning on generated scene graphs.
 <!-- <p align="center">
   <img src="./imgs/deisam_architecture.png">
@@ -18,9 +18,9 @@ We propose DeiSAM, which integrates large pre-trained neural networks with diffe
 
 
 <!-- ![neumann](./imgs/deisam_logo.png) -->
-<!-- 
+<!--
 **NEUMANN solves Behind-the-Scenes task.**
-Reasoning behind the scenes:  The goal of this task is to compute the answer of a query, e.g., *``What is the color of the second left-most object after deleting a gray object?''* given a visual scene. To answer this query, the agent needs to reason behind the scenes and understand abstract operations on objects. In the first task, the agent needs to induce an explicit program given visual examples, where each example consists of several visual scenes that describe the input and the output of the operation to be learned. The abstract operations can be described and computed by first-order logic with functors. 
+Reasoning behind the scenes:  The goal of this task is to compute the answer of a query, e.g., *``What is the color of the second left-most object after deleting a gray object?''* given a visual scene. To answer this query, the agent needs to reason behind the scenes and understand abstract operations on objects. In the first task, the agent needs to induce an explicit program given visual examples, where each example consists of several visual scenes that describe the input and the output of the operation to be learned. The abstract operations can be described and computed by first-order logic with functors.
 In the second task, the agent needs to apply the learned programs to new situations to solve queries reasoning about non-observational scenes.
 
 ## How does it work?
@@ -77,7 +77,7 @@ python src/learn_deisam.py --api-key YOUR_OPENAI_API_KEY -c 2 -sm VETO -su
 ```
 
 
-<!-- 
+<!--
 # Experiments
 
 ## Prerequisites
@@ -86,7 +86,7 @@ which is compatible with [packages](./pip_requirements.txt) (produced by pip fre
 The main dependent packages are:
 ```
 pytorch
-torch-geometric 
+torch-geometric
 networkx
 ```
 We used Python 3.8 for the experiments.
@@ -111,11 +111,11 @@ docker run -it -v <local path to the repository>:/neumann --name neumann neumann
 To open the container on machines without GPUs using VSCode, run
 ```
 cp .devcontainer/Dockerfile_nogpu .devcontainer/Dockerfile
-``` 
+```
 and use the VSCode remotehost extension (recommended). -->
 
 
-<!-- 
+<!--
 ## Perform learning
 For example, in the container, learning Kandinsky patterns on red triangle using the demo dataset can be performed:
 ```
@@ -131,5 +131,5 @@ More scripts are available:
 [Solving Behind-the-Scenes](./scripts/solve_behind-the-scenes.sh) -->
 
 # LICENSE
-See [LICENSE](./LICENSE). 
+See [LICENSE](./LICENSE).
 
