@@ -1,5 +1,3 @@
-from annotated_types import Predicate
-
 import neumann
 import neumann.fol.logic as logic
 from neumann.fol.language import DataType, Language

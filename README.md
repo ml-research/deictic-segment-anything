@@ -3,7 +3,7 @@
   <img src="./imgs/deisam_logo_eye.png">
 </p>  -->
 
-# DeiSAM: Segment Anything with Deictic Prompting
+# DeiSAM: Segment Anything with Deictic Prompting (NeurIPS 2024)
 Hikaru Shindo, Manuel Brack, Gopika Sudhakaran, Devendra Singh Dhami, Patrick Schramowski, Kristian Kersting
 
 [AI/ML Lab @ TU Darmstadt](https://ml-research.github.io/index.html)
@@ -12,20 +12,6 @@ Hikaru Shindo, Manuel Brack, Gopika Sudhakaran, Devendra Singh Dhami, Patrick Sc
   <img src="./imgs/deisam_task.png", height=180>
 </p>
 We propose DeiSAM, which integrates large pre-trained neural networks with differentiable logic reasoners. Given a complex, textual segmentation description, DeiSAM leverages Large Language Models (LLMs) to generate first-order logic rules and performs differentiable forward reasoning on generated scene graphs.
-<!-- <p align="center">
-  <img src="./imgs/deisam_architecture.png">
-</p>  -->
-
-
-<!-- ![neumann](./imgs/deisam_logo.png) -->
-<!--
-**NEUMANN solves Behind-the-Scenes task.**
-Reasoning behind the scenes:  The goal of this task is to compute the answer of a query, e.g., *``What is the color of the second left-most object after deleting a gray object?''* given a visual scene. To answer this query, the agent needs to reason behind the scenes and understand abstract operations on objects. In the first task, the agent needs to induce an explicit program given visual examples, where each example consists of several visual scenes that describe the input and the output of the operation to be learned. The abstract operations can be described and computed by first-order logic with functors.
-In the second task, the agent needs to apply the learned programs to new situations to solve queries reasoning about non-observational scenes.
-
-## How does it work?
-NEUMANN compiles *first-order logic* programs into a *graph neural network*. Logical entailment is compted using probabilistic atoms and weighted rules using fuzzy logic operations.
-![neumann](./imgs/reasoning_graph.png) -->
 
 
 # Install
@@ -57,12 +43,31 @@ Download vit model
 wget https://huggingface.co/spaces/abhishek/StableSAM/resolve/main/sam_vit_h_4b8939.pth
 ```
 
-# Experiments
+# Dataset
 **DeiVG datasets can be downloaded here
-[link](https://osf.io/v32aq/?view_only=064a96bf0c8a4ee6bd6127544ddc27af).** Please locate downloaded files to `data/`.
+[link](https://hessenbox.tu-darmstadt.de/getlink/fiJwsDNjdY9HDrUMf3btjoHG/).** Please locate downloaded files to `data/` as follows (make sure you are in the home folder of this project):
+```
+mkdir data/
+cd data
+wget https://hessenbox.tu-darmstadt.de/dl/fiJwsDNjdY9HDrUMf3btjoHG/.dir -O deivg.zip
+unzip deivg.zip
+cd visual_genome
+unzip by-id.zip
+```
 
-Please download the latest Visual Genome here [link](https://homes.cs.washington.edu/~ranjay/visualgenome/api.html), and locate downloaded files to `data/visual_genome/`.
 
+Please download Visual Genome images [link](https://homes.cs.washington.edu/~ranjay/visualgenome/api.html), and locate downloaded files to `data/visual_genome/` as follows:
+```
+cd data/visual_genome
+wget https://cs.stanford.edu/people/rak248/VG_100K_2/images.zip
+wget https://cs.stanford.edu/people/rak248/VG_100K_2/images2.zip
+unzip images.zip
+unzip iamges2.zip
+mv VG_100K_2/* VG_100K/
+```
+
+
+# Experiments
 To solve DeiVG using DeiSAM:
 ```
 python src/solve_deivg.py --api-key YOUR_OPENAI_API_KEY -c 1
@@ -70,12 +75,14 @@ python src/solve_deivg.py --api-key YOUR_OPENAI_API_KEY -c 2
 python src/solve_deivg.py --api-key YOUR_OPENAI_API_KEY -c 3
 ```
 
-To perform learning on DeiSAM:
-```
-python src/learn_deisam.py --api-key YOUR_OPENAI_API_KEY -c 1 -sm VETO -su
-python src/learn_deisam.py --api-key YOUR_OPENAI_API_KEY -c 2 -sm VETO -su
-```
 
+The demonstration of learning can be performed by:
+```
+python src/learning_demo.py --api-key YOUR_OPENAI_API_KEY -c 1 -sgg VETO -su
+python src/learning_demo.py --api-key YOUR_OPENAI_API_KEY -c 2 -sgg VETO -su
+```
+*Note that DeiSAM is esseitially a training-free model.* Learning here is a demonstration of the learning capability by gradients. The best performance will be always achieved by using the model with ground-truth scene graphs, which corresponds to `solve_deivg.py`. 
+In other words, DeiSAM doesn't need to be trained when the scene graphs are availale. A future plan is to mitigate the case where scene graphs are not available.
 
 <!--
 # Experiments
@@ -129,6 +136,24 @@ More scripts are available:
 [Learning kandinsky/clevr-hans patterns](./scripts/solve_kandinsky_clevr.sh)
 
 [Solving Behind-the-Scenes](./scripts/solve_behind-the-scenes.sh) -->
+
+# Bibtex
+```
+@inproceedings{shindo24deisam,
+  author       = {Hikaru Shindo and
+                  Manuel Brack and
+                  Gopika Sudhakaran and
+                  Devendra Singh Dhami and
+                  Patrick Schramowski and
+                  Kristian Kersting},
+  title        = {DeiSAM: Segment Anything with Deictic Prompting},
+  booktitle    = {Proceedings of the Conference on Advances in Neural Information Processing Systems (NeurIPS)},
+  year         = {2024},
+}
+
+```
+
+
 
 # LICENSE
 See [LICENSE](./LICENSE).

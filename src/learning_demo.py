@@ -430,7 +430,7 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "-sm",
+        "-sgg",
         "--sgg-model",
         help="Scene Graph Generation model to be used, None, VETO or [TODO]",
         action="store",

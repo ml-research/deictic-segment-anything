@@ -156,11 +156,11 @@ def answer_to_boxes(answers):
 
 
 def save_box_to_file(pr_boxes, gt_boxes, id, counter, args):
-    pr_path = "result/{}_comp{}_learn/{}{}/prediction/{}_vg{}.txt".format(
+    pr_path = "result/{}_comp{}/{}{}/prediction/{}_vg{}.txt".format(
         args.dataset, args.complexity, args.model, args.sgg_model, counter, id
     )
 
-    gt_path = "result/{}_comp{}_learn/{}{}/ground_truth/{}_vg{}.txt".format(
+    gt_path = "result/{}_comp{}/{}{}/ground_truth/{}_vg{}.txt".format(
         args.dataset, args.complexity, args.model, args.sgg_model, counter, id
     )
 

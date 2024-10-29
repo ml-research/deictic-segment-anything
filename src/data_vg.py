@@ -79,20 +79,10 @@ class DeicticVisualGenome(torch.utils.data.Dataset):
     def load_json(self, path):
         with open(path, "r") as f:
             json_data = json.load(f)
-        # randomize the order !! this causes a bug, data index should be shuffled too, that links scene graphs
-        # random.shuffle(json_data['queries'])
         return json_data
 
     def __getitem__(self, item):
         data = self.json_data["queries"][item]
-        # image_id = data["image_id"]
-        # image_source, image = load_image(
-        #     "data/visual_genome/VG_100K/{}.jpg".format(image_id)
-        # )
-        # deictic_representation = data["deictic_representation"]
-        # answer = data["answer"]
-        # vg_data_index = data["vg_data_index"]
-        # id = data["id"]
 
         deictic_representation = data[0] + "."
         answer = data[1]
@@ -125,15 +115,15 @@ class DeicticVisualGenomeSGGTraining(torch.utils.data.Dataset):
     def __init__(self, args, mode="train"):
         if mode == "train":
             self.json_data = self.load_json(
-                "data/deictic_vg_comp{}_sgg_train.json".format(args.complexity)
+                "data/learning_deivg/deictic_vg_comp{}_sgg_train.json".format(args.complexity)
             )
         elif mode == "val":
             self.json_data = self.load_json(
-                "data/deictic_vg_comp{}_sgg_val.json".format(args.complexity)
+                "data/learning_deivg/deictic_vg_comp{}_sgg_val.json".format(args.complexity)
             )
         elif mode == "test":
             self.json_data = self.load_json(
-                "data/deictic_vg_comp{}_sgg_test.json".format(args.complexity)
+                "data/learning_deivg/deictic_vg_comp{}_sgg_test.json".format(args.complexity)
             )
 
     def load_json(self, path):
@@ -456,12 +446,6 @@ class PredictedSceneGraphUtils:
         return atom, score
 
     def load_scene_graph_by_id(self, image_id):
-        # scene_graph = vg.get_scene_graph(
-        #     image_id=image_id,
-        #     images="data/visual_genome/",
-        #     image_data_dir="data/visual_genome/by-id/",
-        #     synset_file="data/visual_genome/synsets.json",
-        # )
         scene_graph = self.all_relationships[image_id]
         return scene_graph
 
@@ -476,13 +460,8 @@ class PredictedSceneGraphUtils:
             list[neumann.fol.logic.Atom]: A list of atoms.
             neumann.fol.language.Language: An updated FOL language.
         """
-        # scene_graph = self.scene_graphs[data_index]
-        # relationships = scene_graph[0][0]["rel_info"]["spo"]
-        # rels = self.all_relationships[data_index]
         rels = self.scene_graphs[data_index][0]["rel_info"]["spo"]
 
-        # extract predicates from rules (deictic prompt) so we keep only relavant information about the prompt. Discurd inrelavant information (atoms).
-        # necessary_preds = self.extract_necessary_preds(rules)
         atoms = []
         for rel in rels:
             atom, score = self.parse_relationship(rel)
