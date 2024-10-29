@@ -234,7 +234,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "-s",
         "--start",
         help="Start point (data index) for the inference.",
         required=False,
@@ -308,13 +307,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "-sm",
+        "-sgg",
         "--sgg-model",
         help="Scene Graph Generation model to be used, None, VETO or [TODO]",
         action="store",
         dest="sgg_model",
-        default="",
-        choices=["", "VETO"],
+        default="VETO",
+        choices=["VETO"],
     )
 
     parser.add_argument(

@@ -115,15 +115,15 @@ class DeicticVisualGenomeSGGTraining(torch.utils.data.Dataset):
     def __init__(self, args, mode="train"):
         if mode == "train":
             self.json_data = self.load_json(
-                "data/learning_deivg/deictic_vg_comp{}_sgg_train.json".format(args.complexity)
+                "data/deivg_learning/deictic_vg_comp{}_sgg_train.json".format(args.complexity)
             )
         elif mode == "val":
             self.json_data = self.load_json(
-                "data/learning_deivg/deictic_vg_comp{}_sgg_val.json".format(args.complexity)
+                "data/deivg_learning/deictic_vg_comp{}_sgg_val.json".format(args.complexity)
             )
         elif mode == "test":
             self.json_data = self.load_json(
-                "data/learning_deivg/deictic_vg_comp{}_sgg_test.json".format(args.complexity)
+                "data/deivg_learning/deictic_vg_comp{}_sgg_test.json".format(args.complexity)
             )
 
     def load_json(self, path):
