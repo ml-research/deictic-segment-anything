@@ -288,7 +288,7 @@ if __name__ == "__main__":
     device = torch.device("cuda:0")
 
     data_loader = DeicticVisualGenome(
-        path="data/deivg/deictic_vg_v2_comp{}_10k.json".format(args.complexity)
+        json_path="data/deivg/deictic_vg_v2_comp{}_10k.json".format(args.complexity)
     )
 
     if args.model == "DeiSAM":
