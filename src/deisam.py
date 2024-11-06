@@ -70,7 +70,7 @@ class BaseDeiSAM(Module):
             masks, _, _ = self.sam_predictor.predict_torch(
                 point_coords=None, point_labels=None, boxes=transformed_boxes, multimask_output=False)
             return masks
-        except RuntimeError:
+        except (RuntimeError, AttributeError):
             return []
 
 class DeiSAM(BaseDeiSAM):

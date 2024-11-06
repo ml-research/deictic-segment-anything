@@ -131,6 +131,12 @@ class VisualGenomeUtils:
         pred_name = rel["predicate"].replace(" ", "_").lower()
         dtype = DataType("object")
         pred = Predicate(pred_name, 2, [dtype, dtype])
+        # Either of name of names is used as a key
+        # Add key "name" if it is names
+        if "names" in rel["object"].keys():
+            rel["object"]["name"] = rel["object"]["names"][0]
+        if "names" in rel["subject"].keys():
+            rel["subject"]["name"] = rel["subject"]["names"][0]
         consts = [
             Const(rel["subject"]["name"].replace(" ", "_").lower() + f"_{rel['subject']['object_id']}", dtype=dtype),
             Const(rel["object"]["name"].replace(" ", "").lower() + f"_{rel['object']['object_id']}", dtype=dtype),

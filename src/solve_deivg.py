@@ -14,6 +14,7 @@ from deisam_utils import (
     save_llm_response,
     save_segmentation_result,
 )
+from sam_utils import to_boxes
 from groundingdino.util.inference import annotate
 from rtpt import RTPT
 from torchvision.ops import masks_to_boxes
@@ -28,9 +29,9 @@ def process_data(data_index, image_id, graph, deictic_representation, image_sour
         masks, llm_rules, rewritten_rules = deisam.forward(
             data_index, image_id, graph, deictic_representation, image_source
         )
-    except KeyError:
-        print("Skipped!! ID:{}, IMAGE ID:{}".format(counter, image_id))
-        return None, True
+    # except KeyError:
+    #     print("Skipped!! ID:{}, IMAGE ID:{}".format(counter, image_id))
+    #     return None, True
     except openai.error.RateLimitError:
         print("Got openai.error.RateLimitError, wait for 60s...")
         time.sleep(60)
@@ -80,14 +81,22 @@ def segment_by_deisam(args, deisam, data_loader, vg, start_id, end_id):
 
         target_atoms = deisam.target_atoms
 
-        if len(masks) == 0 or is_failed:
-            print("!!!!! No targets found on image {}. Getting a random mask...".format(counter))
-            target_atoms = get_random_masks(deisam)
-            masks = deisam.segment_objects_by_sam(
-                image_source, target_atoms, data_index
-            )
+        if is_failed or len(masks) == 0:
+            gt_boxes = answer_to_boxes(answer)
+            pr_boxes = torch.tensor([[0, 0, 0, 0]])
+            save_box_to_file(pr_boxes, gt_boxes, id, counter, args)
             counter += 1
             continue
+            # print("!!!!! No targets found on image {}. Getting a random mask...".format(counter))
+            # target_atoms = get_random_masks(deisam)
+            # masks = deisam._seagment_objects_by_sam(
+            #     image_source, target_atoms, to_boxes, data_index
+            # )
+            # masks = deisam.segment_objects_by_sam(
+            #     image_source, target_atoms, data_index
+            # )
+            # counter += 1
+            # continue
 
         print("Targets: {}".format(str(target_atoms)))
         # save boxes to texts
@@ -279,6 +288,9 @@ if __name__ == "__main__":
         default="DeiSAM",
         choices=["DeiSAM", "GroundedSAM"],
     )
+    
+    parser.add_argument(
+        "-sgg", "--sgg-model", help="SGG model to be used.", action="store", dest="sgg_model", default="", choices=["", "VETO"])
 
     parser.add_argument(
         "-k", "--api-key", help="An OpenAI API key.", action="store", dest="api_key"
