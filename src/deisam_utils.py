@@ -132,15 +132,32 @@ def save_box_results(args, masks, answer, file_id, counter):
     return pr_boxes, gt_boxes
 
 
-def save_segmentation_result(args, masks, answer, image_source, counter, vg_image_id, data_index, deictic_representation, is_failed):
+def save_segmentation_result(args, masks, image_source, counter, vg_image_id, deictic_representation, is_failed):
     """Plot and save segmentation masks on original visual inputs."""
     annotated_frame = image_source
 
     for mask in masks:
-        annotated_frame = show_mask(mask[0], annotated_frame)
+        # remove batch dimension if exists
+        if len(mask.shape) == 4:
+            mask = mask[0]
+        annotated_frame = show_mask(mask, annotated_frame)
 
-    base_path = f"plot/{args.dataset}_comp{args.complexity}/DeiSAM{args.sgg_model}/"
+    if args.sgg_model != "":
+        if args.complexity != None:
+            base_path = f"plot/{args.dataset}_comp{args.complexity}/{args.model}_{args.sgg_model}/"
+        else:
+            base_path = f"plot/{args.dataset}/{args.model}_{args.sgg_model}/"
+    else:
+        if args.complexity != None:
+            base_path = f"plot/{args.dataset}_comp{args.complexity}/{args.model}/"
+        else:
+            base_path = f"plot/{args.dataset}/{args.model}/"
     os.makedirs(base_path, exist_ok=True)
+    
+    if args.dataset == "gqa":
+        base_name = "DeiGQA"
+    else:
+        base_name = "DeiVG"
 
     save_segmented_images(
         counter=counter,
@@ -148,6 +165,7 @@ def save_segmentation_result(args, masks, answer, image_source, counter, vg_imag
         image_with_mask=annotated_frame,
         description=deictic_representation,
         base_path=base_path,
+        base_name=base_name,
     )
 
     if is_failed:
@@ -159,10 +177,11 @@ def save_segmentation_result(args, masks, answer, image_source, counter, vg_imag
             annotated_frame_with_mask=annotated_frame,
             description=deictic_representation,
             base_path=failed_path,
+            base_name=base_name,
         )
 
 
-def save_segmentation_result_with_alphas(args, masks, mask_probs, answer, image_source, counter, vg_image_id, data_index, deictic_representation, iter):
+def save_segmentation_result_with_alphas(args, masks, mask_probs, image_source, counter, vg_image_id, deictic_representation, iter):
     """Plot and save segmentation masks with alpha values on visual inputs."""
     annotated_frame = image_source
 
@@ -172,6 +191,11 @@ def save_segmentation_result_with_alphas(args, masks, mask_probs, answer, image_
     base_path = f"learning_plot/{args.dataset}_comp{args.complexity}/seed_{args.seed}/iter_{iter}/DeiSAM{args.sgg_model}/"
     os.makedirs(base_path, exist_ok=True)
 
+    if args.dataset == "gqa":
+        base_name = "DeiGQA"
+    else:
+        base_name = "DeiVG"
+
     save_segmented_images_with_target_scores(
         counter=counter,
         vg_image_id=vg_image_id,
@@ -179,6 +203,7 @@ def save_segmentation_result_with_alphas(args, masks, mask_probs, answer, image_
         deictic_representation=deictic_representation,
         mask_probs=mask_probs,
         base_path=base_path,
+        base_name=base_name,
     )
 
 
@@ -278,3 +303,5 @@ def generate_cond_atoms_for_sgg_training(lang, num_sgg_models):
             )
 
     return sorted(set(cond_atoms))
+
+

@@ -153,11 +153,9 @@ def segment_testdata(args, deisam, vg_1, vg_2, data_loader, iter, device, n_data
                 args,
                 masks,
                 target_scores_cpu,
-                answer,
                 image_source,
                 counter,
                 image_id,
-                data_index,
                 deictic_representation,
                 iter,
             )

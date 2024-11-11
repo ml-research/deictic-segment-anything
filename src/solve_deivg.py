@@ -119,11 +119,9 @@ def segment_by_deisam(args, deisam, data_loader, vg, start_id, end_id):
         save_segmentation_result(
             args,
             masks,
-            answer,
             image_source,
             counter,
             image_id,
-            data_index,
             deictic_representation,
             is_failed,
         )

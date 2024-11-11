@@ -96,23 +96,30 @@ def save_boxes_to_file(boxes, path, is_prediction=True):
     text = "\n".join(f"target 1.0 {box[0]} {box[1]} {box[2]} {box[3]}" for box in boxes)
     with open(path, "w") as f:
         f.write(text)
-    print(f"File saved to {path}")
+    print(f"File saved to {path}: {text}")
 
 
 def save_box_to_file(pr_boxes, gt_boxes, id, counter, args):
-    dirs = [
-        f"result/{args.dataset}_comp{args.complexity}/{args.model}/prediction",
-        f"result/{args.dataset}_comp{args.complexity}/{args.model}/ground_truth",
-    ]
+    if args.complexity != None:
+        dirs = [
+            f"result/{args.dataset}_comp{args.complexity}/{args.model}/prediction",
+            f"result/{args.dataset}_comp{args.complexity}/{args.model}/ground_truth",
+        ]
+    else:
+        dirs = [
+            f"result/{args.dataset}/{args.model}/prediction",
+            f"result/{args.dataset}/{args.model}/ground_truth",
+        ]
 
     for dir_path in dirs:
         os.makedirs(dir_path, exist_ok=True)
 
-    pr_path = f"{dirs[0]}/{counter}_vg{id}.txt"
-    gt_path = f"{dirs[1]}/{counter}_vg{id}.txt"
+    pr_path = f"{dirs[0]}/{counter}_ID:{id}.txt"
+    gt_path = f"{dirs[1]}/{counter}_ID:{id}.txt"
 
     save_boxes_to_file(pr_boxes, pr_path)
     save_boxes_to_file(gt_boxes, gt_path, is_prediction=False)
+    
 
 
 def answer_to_boxes(answers):
@@ -122,16 +129,16 @@ def answer_to_boxes(answers):
     return [[answer["x"], answer["y"], answer["x"] + answer["w"], answer["y"] + answer["h"]] for answer in answers]
 
 
-def save_segmented_images(counter, vg_image_id, image_with_mask, description, base_path="imgs/"):
+def save_segmented_images(counter, vg_image_id, image_with_mask, description, base_path="imgs/", base_name="DeiVG"):
     image_with_mask = Image.fromarray(image_with_mask).convert("RGB")
     description = description.replace("/", " ").replace(".", "")
-    save_path = f"{base_path}deicticVG_ID:{counter}_VGImID:{vg_image_id}_{description}.png"
+    save_path = f"{base_path}{base_name}:{counter}_ID:{vg_image_id}_{description}.png"
     image_with_mask.save(save_path)
     print(f"Image saved to {save_path}")
 
 
-def save_segmented_images_with_target_scores(counter, vg_image_id, image_with_mask, description, target_scores, base_path="imgs/"):
+def save_segmented_images_with_target_scores(counter, vg_image_id, image_with_mask, description, target_scores, base_path="imgs/", base_name="DeiVG"):
     if len(target_scores) > 3:
         target_scores = target_scores[:3]
     scores_str = str(np.round(target_scores, 2).tolist())
-    save_segmented_images(counter, vg_image_id, image_with_mask, f"{description}_scores_{scores_str}", base_path)
+    save_segmented_images(counter, vg_image_id, image_with_mask, f"{description}_scores_{scores_str}", base_path, base_name)
