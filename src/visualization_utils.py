@@ -93,7 +93,10 @@ def to_xyxy(boxes):
 
 
 def save_boxes_to_file(boxes, path, is_prediction=True):
-    text = "\n".join(f"target 1.0 {box[0]} {box[1]} {box[2]} {box[3]}" for box in boxes)
+    if is_prediction:
+        text = "\n".join(f"target 1.0 {box[0]} {box[1]} {box[2]} {box[3]}" for box in boxes)
+    else:
+        text = "\n".join(f"target {box[0]} {box[1]} {box[2]} {box[3]}" for box in boxes)
     with open(path, "w") as f:
         f.write(text)
     print(f"File saved to {path}: {text}")
